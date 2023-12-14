@@ -1,0 +1,100 @@
+#include <iostream>
+using namespace std;
+
+class student {
+    private:
+    string name;
+    int rollno;
+    string classname;
+    char division;
+    string dob;
+    string bloodgroup;
+
+
+    public: 
+    //default constructor:
+    student ():
+    name(""),rollno(0),classname(""),division('A'),dob("dd/mm/yyyy"),bloodgroup("") {}
+
+    //constructor
+    student( string _name, int _rollno, string _classname, char _division,
+     string _dob, string _bloodgroup):
+    name(_name), rollno(_rollno), classname(_classname),division(_division), dob(_dob), bloodgroup(_bloodgroup) {}
+
+    //copy constructor
+    student (const student &other):
+    name(other.name),rollno(other.rollno), classname(other.classname),
+    division(other.division),dob(other.dob),bloodgroup(other.bloodgroup) {}
+
+    //destructor 
+    ~student () {}
+
+    //static member function:
+    static void printstudentcount(int count) {
+        cout<<"Total students: "<<count<<endl;
+    }
+
+    //friend function
+    friend class Database ;
+
+};
+
+class Database {
+    private:
+    static int studentcount;
+
+    public:
+    //constructor
+    Database () {}
+
+    //Destructor
+    ~Database() {} 
+
+    //adding student to database:
+    static int addstudent(){
+        string  name, classname, dob, bloodgroup;
+        char division;
+        int rollno;
+
+        cout<<"Enter Name of student: ";
+        cin>>name;
+        cout<<"Enter Roll number of student: ";
+        cin>>rollno;
+        cout<<"Enter Classname of student: ";
+        cin>>classname;
+        cout<<"Enter Division of student: ";
+        cin>>division;
+        cout<<"Enter Date of Birth of student: ";
+        cin>>dob;
+        cout<<"Enter Bloodgroup of student: ";
+        cin>>bloodgroup;
+
+        //dynamic memory allocation:
+        student *newstudent= new student (name, rollno, classname,division, dob, bloodgroup);
+
+        studentcount++;
+        
+    }
+    static int getstudentcount() {
+        return studentcount;
+    }
+
+};
+
+int Database::studentcount=0;
+
+int main () {
+    char ch;
+    do  { Database::addstudent();
+        cout<<"Do you want to add another student (y/n): ";
+        cin>>ch;
+    
+
+    }while( ch=='y' || ch=='Y');
+
+
+    int totalstudents=Database::getstudentcount();
+    student::printstudentcount(totalstudents);
+
+    return 0;
+}
